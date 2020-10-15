@@ -23,9 +23,9 @@
  
 
   <ItemGroup>
-    <Compile Include="src/OptimizedConverter.fs" />
-    <Compile Include="src/Parser.fs" />
-    <Compile Include="src/Scanf.fs" />
+    <Compile Include="OptimizedConverter.fs" />
+    <Compile Include="Parser.fs" />
+    <Compile Include="Scanf.fs" />
   </ItemGroup>
 
   <ItemGroup>
