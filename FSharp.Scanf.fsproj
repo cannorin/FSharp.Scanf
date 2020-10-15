@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard1.6;net46;net45</TargetFrameworks>
+    <Title>FSharp.Scanf</Title>
+    <AssemblyName>FSharp.Scanf</AssemblyName>
+    <VersionPrefix>4.0.0</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
+    <Version Condition=" '$(VersionSuffix)' != '' ">$(VersionPrefix)-$(VersionSuffix)</Version>
+    <Version Condition=" '$(VersionSuffix)' == '' ">$(VersionPrefix)</Version>
+    <AssemblyVersion>$(VersionPrefix).0</AssemblyVersion>
+    <FileVersion>$(VersionPrefix).0</FileVersion>
+
+    <RepositoryUrl>https://github.com/cannorin/FSharp.Scanf.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Description>Efficient and type-safe scanf for F#</Description>
+    <Authors>cannorin</Authors>
+    <Copyright>2017-2020 cannorin</Copyright>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/cannorin/FSharp.Scanf</PackageProjectUrl>
+    <PackageTags>fsharp commandline console scanf</PackageTags>
+  </PropertyGroup>
+ 
+
+  <ItemGroup>
+    <Compile Include="src/OptimizedConverter.fs" />
+    <Compile Include="src/Parser.fs" />
+    <Compile Include="src/Scanf.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="4.2.3" />
+    <PackageReference Include="FParsec" Version="1.0.3" />
+  </ItemGroup>
+
+
+</Project>
