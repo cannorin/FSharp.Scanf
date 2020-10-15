@@ -82,17 +82,21 @@ module Parser =
   let inline internal (<++>) p1 p2 = p1 .>>. p2 |>> List.Cons
   let inline internal strOf p = withSkippedString (fun s _ -> s) p
 
+  let pDecimal : Parser<string, unit> =
+    numberLiteral (NumberLiteralOptions.AllowPlusSign ||| NumberLiteralOptions.AllowMinusSign ||| NumberLiteralOptions.AllowFraction) "decimal"
+    |>> fun nl -> nl.String
+
   let rec internal buildParser = function
     | [] -> eof >>% []
     | FormatStringPart.Space :: rest ->
-      spaces1 >>. buildParser rest
+      spaces >>. buildParser rest
     | FormatStringPart.Literal lit :: rest ->
       skipString lit >>. buildParser rest
     | FormatStringPart.Placeholder c :: rest->
       let cont = buildParser rest
       match c with
         | 'b' -> (pstring "true" <|> pstring "false") <++> cont
-        | 'd' | 'i' -> many1Satisfy isDigit <++> cont
+        | 'd' | 'i' -> strOf pint64 <++> cont
         | 's' | 'A' ->
           manyCharsTill anyChar (followedBy cont) .>>.? cont |>> List.Cons
         | 'u' -> strOf puint64 <++> cont
@@ -103,10 +107,7 @@ module Parser =
           <|> (skipStringCI "infinity" <|> skipStringCI "inf" >>% "Infinity")
           <|> (strOf pfloat)
           <++> cont
-        | 'M' ->
-          many1Satisfy isDigit .>>.? opt (skipChar '.' >>? many1Satisfy isDigit)
-          |>> (fun (i, j) -> i + Option.defaultValue "" j)
-          <++> cont
+        | 'M' -> pDecimal <++> cont
         | 'c' -> anyChar |>> string <++> cont
         | c -> failwithf "Unsupported formatter '%%%c'" c
 
